@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SchoolDiary Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -62,12 +62,8 @@
 			<artifactId>spring-instrument-tomcat</artifactId>
 			<version>4.2.6.RELEASE</version>
 		</dependency>
-		<!--dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-war-plugin</artifactId>
-			<version>2.2</version>
-			<type>maven-plugin</type>
-		</dependency-->
+		<!--dependency> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
+			<version>2.2</version> <type>maven-plugin</type> </dependency -->
 		<!--dependency> <groupId>org.apache.tomcat.maven</groupId> <artifactId>tomcat-maven-archetype</artifactId> 
 			<version>2.2</version> <type>maven-archetype</type> </dependency -->
 		<dependency>
@@ -119,16 +115,23 @@
 	</dependencies>
 	<build>
 		<finalName>SchoolDiary</finalName>
-		<!--plugins>
+		<plugins>
+			<!--plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
+				<version>2.2</version> </plugin -->
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 			</plugin>
-		</plugins-->
+		</plugins>
 	</build>
-	
+
 	<properties>
-	<java.version>1.8</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 </project>
