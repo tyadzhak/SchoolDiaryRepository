@@ -9,6 +9,5 @@ package com.tiad.SchoolDiary.model;
  */
 public interface IPerson {
 	IName getName();
-	IPerson getMother();
-	IPerson getFather();
+	IPerson getParent(boolean mother) throws Exception;
 }
