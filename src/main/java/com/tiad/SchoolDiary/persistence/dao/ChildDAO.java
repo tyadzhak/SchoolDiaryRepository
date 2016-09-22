@@ -3,7 +3,7 @@ package com.tiad.SchoolDiary.persistence.dao;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tiad.SchoolDiary.persistence.Entities.ChildEntity;
+import com.tiad.SchoolDiary.persistence.entities.ChildEntity;
 
 
 /*

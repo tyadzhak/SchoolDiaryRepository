@@ -7,7 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public abstract class GenericDAO<T> {
 	@Autowired
 	SessionFactory sessionFactory;
@@ -62,6 +64,14 @@ public abstract class GenericDAO<T> {
 		if (c != null) {
 			currentSession.delete(c);
 		}
+	}
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 	/**

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({"classpath:resource/persistence-sqlite.properties"})
-@ComponentScan({"com.tiad.SchoolDiary"})
+@ComponentScan({"com.tiad.SchoolDiary.persistence"})
 public class PersistenceConfig {
 	@Autowired
 	private Environment env;
@@ -68,5 +68,13 @@ public class PersistenceConfig {
 				setProperty("hibernate.globally_quoted_identifiers", "true");
 			}
 		};
+	}
+
+	public Environment getEnv() {
+		return env;
+	}
+
+	public void setEnv(Environment env) {
+		this.env = env;
 	}
 }

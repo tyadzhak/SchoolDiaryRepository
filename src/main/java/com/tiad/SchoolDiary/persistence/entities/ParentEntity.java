@@ -1,23 +1,23 @@
-package com.tiad.SchoolDiary.persistence.Entities;
+package com.tiad.SchoolDiary.persistence.entities;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-//import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.tiad.SchoolDiary.model.IName;
-
 @Entity
-@Table(name="children")
-public class ChildEntity{
+@Table(name="parents")
+public class ParentEntity {
 	
 	@Id
 	@Column(name="recId", nullable=false, unique=true)
@@ -34,9 +34,15 @@ public class ChildEntity{
 	@Column(name="lastName")
 	private String lastName;
 	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "children")
-	private Set<ParentEntity> parents = new HashSet<ParentEntity>();
-
+	//if true then mother, false - father
+	@Column(name="isMother")
+	private boolean isMother;
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name="parentsChildrenAttach", joinColumns= {@JoinColumn(name="childId", nullable = false, updatable = false)},
+			inverseJoinColumns={@JoinColumn(name="parentId", nullable = false, updatable = false)})
+	private Set<ChildEntity> children = new HashSet<ChildEntity>();
+	
 	public long getId() {
 		return id;
 	}
@@ -68,12 +74,20 @@ public class ChildEntity{
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-	public Set<ParentEntity> getParents() {
-		return parents;
+
+	public boolean isMother() {
+		return isMother;
 	}
 
-	public void setParents(Set<ParentEntity> parents) {
-		this.parents = parents;
+	public void setMother(boolean isMother) {
+		this.isMother = isMother;
 	}
+
+	public Set<ChildEntity> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<ChildEntity> children) {
+		this.children = children;
+	}	
 }
