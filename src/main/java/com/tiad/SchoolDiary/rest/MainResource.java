@@ -9,14 +9,12 @@ import javax.ws.rs.core.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.tiad.SchoolDiary.model.IPerson;
-import com.tiad.SchoolDiary.model.impl.ChildImpl;
-import com.tiad.SchoolDiary.persistence.dao.ChildDAO;
-import com.tiad.SchoolDiary.persistence.dao.GenericDAO;
-import com.tiad.SchoolDiary.persistence.entities.ChildEntity;
+import com.tiad.SchoolDiary.persistence.PersistenceConfig;
+import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
+import com.tiad.SchoolDiary.persistence.dao.PersonDao;
+import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 
 @Path("MainResource")
 public class MainResource {
@@ -24,25 +22,18 @@ public class MainResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response start() throws JSONException {
-		/*
-		ApplicationContext context = 
-	             new FileSystemXmlApplicationContext("file:WEB-INF/Beans.xml");
-		*/
+		@SuppressWarnings("unused")
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(PersistenceConfig.class);
 		
-		/*
-		ApplicationContext context = 
-	             new ClassPathXmlApplicationContext("file:Beans.xml");*/
-		
-		/*ApplicationContext context =
-				new ClassPathXmlApplicationContext(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/WEB-INF/Beans.xml"));
-		*/
-		GenericDAO<ChildEntity> dao = new ChildDAO();
-		ChildEntity ent = dao.getById(0);
-		IPerson child = new ChildImpl(ent);
-		
-		
+		// create the required DAO Factory
+		DaoFactory mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+
+		// Create a DAO
+		PersonDao<PersonEntity> personDao = mySqlFactory.getPersonDao();
+		PersonEntity ent = personDao.getById(0);
+			
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("Child", child); 
+		jsonObject.put("Person", ent); 
  
 		String result = "@Produces(\"application/json\") Output: \n\n" + jsonObject;
 		return Response.status(200).entity(result).build();

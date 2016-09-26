@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource({"classpath:resource/persistence-sqlite.properties"})
-@ComponentScan({"com.tiad.SchoolDiary.persistence"})
+@PropertySource({"classpath:persistence-sqlite.properties"})
+@ComponentScan({"com.tiad.SchoolDiary"})
 public class PersistenceConfig {
 	@Autowired
 	private Environment env;

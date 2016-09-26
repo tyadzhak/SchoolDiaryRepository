@@ -1,23 +1,25 @@
-package com.tiad.SchoolDiary.persistence.entities;
+package com.tiad.SchoolDiary.persistence.entities.mysql;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-//import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.tiad.SchoolDiary.model.IName;
+import com.tiad.SchoolDiary.model.Person;
+import com.tiad.SchoolDiary.model.PersonGender;
+import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 
 @Entity
-@Table(name="children")
-public class ChildEntity{
+@Table(name="person")
+public class MySqlPersonEntity implements PersonEntity {
+	/**
+	 * serial
+	 */
+	private static final long serialVersionUID = 5449087078308201630L;
 	
 	@Id
 	@Column(name="recId", nullable=false, unique=true)
@@ -34,9 +36,12 @@ public class ChildEntity{
 	@Column(name="lastName")
 	private String lastName;
 	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "children")
-	private Set<ParentEntity> parents = new HashSet<ParentEntity>();
-
+	@Column(name="dob")
+	private LocalDate dob;
+	
+	@Column(name="gender")
+	private PersonGender gender;
+	
 	public long getId() {
 		return id;
 	}
@@ -44,36 +49,52 @@ public class ChildEntity{
 	public void setId(long id) {
 		this.id = id;
 	}
-
+	
+	@Override
 	public String getFirstName() {
 		return firstName;
 	}
-
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
+	
+	@Override
 	public String getMiddleName() {
 		return middleName;
 	}
-
+	
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
-
+	
+	@Override
 	public String getLastName() {
 		return lastName;
 	}
-
+	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 	
-	public Set<ParentEntity> getParents() {
-		return parents;
+	@Override
+	public LocalDate getDob() {
+		return dob;
+	}
+	
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
+	}
+	
+	@Override
+	public PersonGender getGender() {
+		return gender;
+	}
+	
+	public void setGender(PersonGender gender) {
+		this.gender = gender;
 	}
 
-	public void setParents(Set<ParentEntity> parents) {
-		this.parents = parents;
-	}
+	
+
 }

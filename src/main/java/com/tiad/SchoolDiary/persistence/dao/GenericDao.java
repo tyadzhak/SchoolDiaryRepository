@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public abstract class GenericDAO<T> {
+public abstract class GenericDao<T> {
 	@Autowired
 	SessionFactory sessionFactory;
 	
 	private Class<T> persistentClass;
 	
 	@SuppressWarnings("unchecked")
-	public GenericDAO() {
+	public GenericDao() {
 	       setPersistentClass((Class<T>) ((ParameterizedType) getClass()
 	             .getGenericSuperclass()).getActualTypeArguments()[0]);
 	    }
@@ -44,7 +44,7 @@ public abstract class GenericDAO<T> {
 			ex.printStackTrace();
 		}
 		return c;
-	}
+	}	
 
 	/**
 	 * Delete an object from the database by an id
