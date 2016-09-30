@@ -8,8 +8,8 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigRegistry;
 
 import com.tiad.SchoolDiary.persistence.PersistenceConfig;
 import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
@@ -22,14 +22,15 @@ public class MainResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response start() throws JSONException {
-		@SuppressWarnings("unused")
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(PersistenceConfig.class);
+		@SuppressWarnings("resource")
+		AnnotationConfigRegistry ctx = new AnnotationConfigApplicationContext();
+		ctx.register(PersistenceConfig.class);
 		
 		// create the required DAO Factory
 		DaoFactory mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
 
 		// Create a DAO
-		PersonDao<PersonEntity> personDao = mySqlFactory.getPersonDao();
+		PersonDao personDao = mySqlFactory.getPersonDao();
 		PersonEntity ent = personDao.getById(0);
 			
 		JSONObject jsonObject = new JSONObject();

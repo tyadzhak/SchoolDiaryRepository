@@ -1,4 +1,4 @@
-package com.tiad.SchoolDiary.persistence.entities.mysql;
+package com.tiad.SchoolDiary.persistence.entities.impl;
 
 import java.time.LocalDate;
 
@@ -9,13 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.tiad.SchoolDiary.model.Person;
 import com.tiad.SchoolDiary.model.PersonGender;
 import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 
 @Entity
 @Table(name="person")
-public class MySqlPersonEntity implements PersonEntity {
+public class PersonEntityImpl implements PersonEntity {
 	/**
 	 * serial
 	 */
@@ -55,6 +54,7 @@ public class MySqlPersonEntity implements PersonEntity {
 		return firstName;
 	}
 	
+	@Override
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -64,6 +64,7 @@ public class MySqlPersonEntity implements PersonEntity {
 		return middleName;
 	}
 	
+	@Override
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
@@ -73,6 +74,7 @@ public class MySqlPersonEntity implements PersonEntity {
 		return lastName;
 	}
 	
+	@Override
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -82,6 +84,7 @@ public class MySqlPersonEntity implements PersonEntity {
 		return dob;
 	}
 	
+	@Override
 	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
@@ -91,6 +94,7 @@ public class MySqlPersonEntity implements PersonEntity {
 		return gender;
 	}
 	
+	@Override
 	public void setGender(PersonGender gender) {
 		this.gender = gender;
 	}

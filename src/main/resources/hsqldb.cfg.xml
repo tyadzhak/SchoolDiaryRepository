@@ -1,0 +1,23 @@
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.HSQLDialect
+		</property>
+		<property name="hibernate.connection.driver_class">
+			org.hsqldb.jdbc.JDBCDriver
+		</property>
+		<property name="hibernate.connection.url">
+			jdbc:hsqldb:file:/database/testdb
+		</property>
+		<property name="hibernate.connection.username">
+			test
+		</property>
+		<property name="hibernate.connection.password">
+			test
+		</property>
+		<property name="hibernate.hbm2ddl.auto">create-drop</property>
+	</session-factory>
+</hibernate-configuration>

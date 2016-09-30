@@ -2,7 +2,6 @@ package com.tiad.SchoolDiary.persistence.dao;
 
 import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 
-
 public interface PersonDao<T extends PersonEntity> {
 	void save(T c);
 	T getById(long id);

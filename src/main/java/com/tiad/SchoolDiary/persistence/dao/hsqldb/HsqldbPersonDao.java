@@ -1,4 +1,4 @@
-package com.tiad.SchoolDiary.persistence.dao.mysql;
+package com.tiad.SchoolDiary.persistence.dao.hsqldb;
 
 import javax.annotation.Resource;
 
@@ -28,10 +28,11 @@ import com.tiad.SchoolDiary.persistence.entities.impl.PersonEntityImpl;
  * @Transactional is used as a means to enable transaction management within
  * your Java DAO file.
  */
-@Repository
+//@Repository
 @Transactional
 @Component
-public class MySqlPersonDao extends GenericDao<PersonEntityImpl> implements PersonDao<PersonEntityImpl> {
+public class HsqldbPersonDao extends GenericDao<PersonEntityImpl> implements PersonDao<PersonEntityImpl>{
+	
 	/*
 	@Override
 	public int insertPerson(Person p) {
