@@ -1,6 +1,5 @@
 package com.tiad.SchoolDiary.model;
 
-import javax.xml.bind.annotation.XmlAttribute;
 
 public enum PersonGender {
 	MALE("Male"),
@@ -14,7 +13,6 @@ public enum PersonGender {
      * Current string value stored in the enum.
      * @return string value.
      */
-    @XmlAttribute(name = "value")
     public String getValue() {
         return this.value;
     }

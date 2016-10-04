@@ -6,6 +6,7 @@ public interface PersonDao<T extends PersonEntity> {
 	void save(T c);
 	T getById(long id);
 	void deleteById(long id);
+	boolean isExists(long id);
 	
 	/*public int insertPerson(Person p);
 

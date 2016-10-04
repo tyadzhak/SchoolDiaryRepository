@@ -9,9 +9,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
+import com.tiad.SchoolDiary.persistence.dao.PersonDao;
+import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
+import com.tiad.SchoolDiary.persistence.entities.impl.PersonEntityImpl;
 
 @Configuration
 @EnableTransactionManagement
@@ -20,7 +26,6 @@ public class PersistenceConfig {
 
 	@Bean(name="sessionFactory")
 	public LocalSessionFactoryBean sessionFactory() {
-		//System.out.println("sessionFactory");
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(restDataSource());
 		sessionFactory.setPackagesToScan(new String[] { "com.tiad.SchoolDiary" });
@@ -31,7 +36,6 @@ public class PersistenceConfig {
 
 	@Bean(name="restDataSource")
 	public DataSource restDataSource() {
-		//System.out.println("restDataSource");
 		org.hibernate.cfg.Configuration cfg = hibernateConfiguration();
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(cfg.getProperty("hibernate.connection.driver_class"));
@@ -44,7 +48,6 @@ public class PersistenceConfig {
 	@Bean(name="transactionManager")
 	@Autowired
 	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-		//System.out.println("transactionManager");
 		HibernateTransactionManager txManager = new HibernateTransactionManager();
 		txManager.setSessionFactory(sessionFactory);
 
@@ -53,13 +56,28 @@ public class PersistenceConfig {
 
 	@Bean(name="exceptionTranslation")
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-		//System.out.println("exceptionTranslation");
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 
 	@Bean(name="hibernateConfiguration")
 	public org.hibernate.cfg.Configuration hibernateConfiguration() {
-		System.out.println("hibernateConfiguration");
-		return new org.hibernate.cfg.Configuration().configure("mysql.cfg.xml");
+		return new org.hibernate.cfg.Configuration().configure("hsqldb.cfg.xml");
+		//return new org.hibernate.cfg.Configuration().configure("mysql.cfg.xml");
+	}
+	
+	@Bean(name="hibernateTemplate")
+	public HibernateTemplate hibernateTemplate() {
+		return new HibernateTemplate(sessionFactory().getObject());
+	}
+	
+	@Bean(name="getPersonDao")
+	public PersonDao<?> getPersonDao(){
+		//return DaoFactory.getDaoFactory(DaoFactory.MYSQL).getPersonDao();
+		return DaoFactory.getDaoFactory(DaoFactory.HSQLDB).getPersonDao();
+	}
+	
+	@Bean(name="getPersonEntity")
+	public PersonEntity getPersonEntity(){
+		return new PersonEntityImpl();
 	}
 }
