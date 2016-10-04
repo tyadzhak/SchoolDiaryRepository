@@ -3,36 +3,50 @@ package com.tiad.SchoolDiary.tools;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.hibernate.tool.hbm2ddl.SchemaExport.Action;
+import org.hibernate.tool.schema.TargetType;
 
 public class SchemaGenerator {
 	private Configuration cfg;
 
-	public SchemaGenerator(Configuration c, String packageName) throws Exception {
+	public SchemaGenerator(Configuration c)
+			throws Exception {
 		cfg = c;
-		
-		for (Class<?> clazz : getClasses(packageName)) {
-			cfg.addAnnotatedClass(clazz);
-		}
+
 	}
 
 	/**
 	 * Method that actually creates the file.
-	 * 
-	 * @param dbDialect
-	 *            to use
+	 * @throws Exception 
 	 */
-	public void generate(String file) {
-		SchemaExport export = new SchemaExport(cfg);
-		export.setDelimiter(";");
+	public void generate(String file, String packageName) throws Exception {
+		ServiceRegistry serviceRegistry = buildCfg();
+		MetadataSources metadata = new MetadataSources(serviceRegistry);
+
+		for (Class<?> clazz : getClasses(packageName)) {
+			metadata.addAnnotatedClass(clazz);
+		}
 		
-		export.setOutputFile(file);
-		export.execute(true, true, false, false);
+		SchemaExport schemaExport = new SchemaExport();
+
+		schemaExport.setDelimiter(";");
+		schemaExport.setOutputFile(file);
+		schemaExport.execute(EnumSet.of(TargetType.STDOUT), Action.BOTH, metadata.buildMetadata());
+		((StandardServiceRegistryImpl) serviceRegistry).destroy();
+	}
+	
+	private ServiceRegistry buildCfg() {
+		return (ServiceRegistry) cfg.getStandardServiceRegistryBuilder()
+				.build();
 	}
 
 	/**

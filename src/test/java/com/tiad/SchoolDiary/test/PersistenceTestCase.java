@@ -44,9 +44,8 @@ public class PersistenceTestCase extends TestCase {
 		try {
 			assertEquals(false, file.isEmpty());
 
-			SchemaGenerator gen = new SchemaGenerator(cfgBean,
-					"com.tiad.SchoolDiary.persistence.entities.impl");
-			gen.generate(file);
+			SchemaGenerator gen = new SchemaGenerator(cfgBean);
+			gen.generate(file, "com.tiad.SchoolDiary.persistence.entities.impl");
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertFalse(true);
