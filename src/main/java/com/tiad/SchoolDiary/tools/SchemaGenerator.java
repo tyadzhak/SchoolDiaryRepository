@@ -18,15 +18,14 @@ import org.hibernate.tool.schema.TargetType;
 public class SchemaGenerator {
 	private Configuration cfg;
 
-	public SchemaGenerator(Configuration c)
-			throws Exception {
+	public SchemaGenerator(Configuration c) {
 		cfg = c;
-
 	}
 
 	/**
 	 * Method that actually creates the file.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void generate(String file, String packageName) throws Exception {
 		ServiceRegistry serviceRegistry = buildCfg();
@@ -35,15 +34,16 @@ public class SchemaGenerator {
 		for (Class<?> clazz : getClasses(packageName)) {
 			metadata.addAnnotatedClass(clazz);
 		}
-		
+
 		SchemaExport schemaExport = new SchemaExport();
 
 		schemaExport.setDelimiter(";");
 		schemaExport.setOutputFile(file);
-		schemaExport.execute(EnumSet.of(TargetType.STDOUT), Action.BOTH, metadata.buildMetadata());
+		schemaExport.execute(EnumSet.of(TargetType.STDOUT), Action.BOTH,
+				metadata.buildMetadata());
 		((StandardServiceRegistryImpl) serviceRegistry).destroy();
 	}
-	
+
 	private ServiceRegistry buildCfg() {
 		return (ServiceRegistry) cfg.getStandardServiceRegistryBuilder()
 				.build();
@@ -58,21 +58,18 @@ public class SchemaGenerator {
 	private List<Class<?>> getClasses(String packageName) throws Exception {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		File directory = null;
-		try {
-			ClassLoader cld = Thread.currentThread().getContextClassLoader();
-			if (cld == null) {
-				throw new ClassNotFoundException("Can't get class loader.");
-			}
-			String path = packageName.replace('.', '/');
-			URL resource = cld.getResource(path);
-			if (resource == null) {
-				throw new ClassNotFoundException("No resource for " + path);
-			}
-			directory = new File(resource.getFile());
-		} catch (NullPointerException x) {
-			throw new ClassNotFoundException(packageName + " (" + directory
-					+ ") does not appear to be a valid package");
+
+		ClassLoader cld = Thread.currentThread().getContextClassLoader();
+		if (cld == null) {
+			return classes;
 		}
+		String path = packageName.replace('.', '/');
+		URL resource = cld.getResource(path);
+		if (resource == null) {
+			return classes;
+		}
+		directory = new File(resource.getFile());
+
 		if (directory.exists()) {
 			String[] files = directory.list();
 			for (int i = 0; i < files.length; i++) {
@@ -82,9 +79,6 @@ public class SchemaGenerator {
 							+ files[i].substring(0, files[i].length() - 6)));
 				}
 			}
-		} else {
-			throw new ClassNotFoundException(packageName
-					+ " is not a valid package (" + directory.getPath() + ")");
 		}
 
 		return classes;

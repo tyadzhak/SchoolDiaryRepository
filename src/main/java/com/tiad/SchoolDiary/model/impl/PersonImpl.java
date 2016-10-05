@@ -3,19 +3,24 @@ package com.tiad.SchoolDiary.model.impl;
 import java.time.LocalDate;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.tiad.SchoolDiary.model.Person;
-import com.tiad.SchoolDiary.model.PersonGender;
+import com.tiad.SchoolDiary.model.Gender;
+import com.tiad.SchoolDiary.model.adapters.GenderAdapter;
+import com.tiad.SchoolDiary.model.adapters.LocalDateAdapter;
 import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
+import com.tiad.SchoolDiary.persistence.entities.impl.PersonEntityImpl;
 
 @XmlRootElement(name = "Person")
-class PersonImpl implements Person {
+public class PersonImpl implements Person {
 	private static final long serialVersionUID = -8103095310142859744L;
 
 	private PersonEntity entity;
 	
 	public PersonImpl() {
-		entity = null;
+		//todo model do not create instance of entity
+		entity = new PersonEntityImpl();
 	}
 		
 	public PersonImpl(PersonEntity ent) {
@@ -53,6 +58,7 @@ class PersonImpl implements Person {
 	}
 	
 	@Override
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getDob() {
 		return entity.getDob();
 	}
@@ -63,12 +69,13 @@ class PersonImpl implements Person {
 	}
 	
 	@Override
-	public PersonGender getGender() {
+	@XmlJavaTypeAdapter(GenderAdapter.class)
+	public Gender getGender() {
 		return entity.getGender();
 	}
 	
 	@Override
-	public void setGender(PersonGender gender) {
+	public void setGender(Gender gender) {
 		entity.setGender(gender);
 	}
 }

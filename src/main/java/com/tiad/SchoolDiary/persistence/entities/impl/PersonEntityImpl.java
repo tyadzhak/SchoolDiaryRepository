@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.tiad.SchoolDiary.model.PersonGender;
+import com.tiad.SchoolDiary.model.Gender;
 import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 
 @Entity
@@ -40,7 +40,7 @@ public class PersonEntityImpl implements PersonEntity {
 	private LocalDate dob;
 	
 	@Column(name="gender")
-	private PersonGender gender;
+	private Gender gender;
 	
 	public long getId() {
 		return id;
@@ -91,12 +91,12 @@ public class PersonEntityImpl implements PersonEntity {
 	}
 	
 	@Override
-	public PersonGender getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 	
 	@Override
-	public void setGender(PersonGender gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

@@ -2,12 +2,28 @@ package com.tiad.SchoolDiary.model;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-public enum PersonRole {
+public enum Role {
 	PARENT("Parent"),
 	SCHOOL_CHILD("SchoolChild");
 	
-    private PersonRole(final String v){
+    private Role(final String v){
         this.value = v;
+    }
+    
+    public static Role of(String value){   	
+    	if(value == null)
+    		throw new IllegalArgumentException("Value cannot be null");
+    	
+    	switch (value) {
+		case "Parent":
+			return PARENT;
+			
+		case "SchoolChild":
+			return SCHOOL_CHILD;
+
+		default:
+			throw new IllegalArgumentException("Undefined role type");
+		}
     }
 
     /**

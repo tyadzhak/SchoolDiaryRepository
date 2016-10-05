@@ -9,7 +9,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tiad.SchoolDiary.model.PersonGender;
+import com.tiad.SchoolDiary.model.Gender;
+import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
 import com.tiad.SchoolDiary.persistence.dao.PersonDao;
 import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 import com.tiad.SchoolDiary.test.tools.PersistenceConfig;
@@ -40,46 +41,56 @@ public class PersistenceTestCase extends TestCase {
 	}
 
 	@Test
-	public void ddlGeneratorTest() {
-		try {
+	public void ddlGeneratorTest() throws Exception {
+//		try {
 			assertEquals(false, file.isEmpty());
 
 			SchemaGenerator gen = new SchemaGenerator(cfgBean);
 			gen.generate(file, "com.tiad.SchoolDiary.persistence.entities.impl");
-		} catch (Exception e) {
-			e.printStackTrace();
-			assertFalse(true);
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			assertFalse(true);
+//		}
 	}
 
 	@Test
 	public void savePersonInDbTest() {
-		try {
+//		try {
 			PersonEntity p = (PersonEntity) context.getBean("getPersonEntity");
 			p.setFirstName("fn t1");
 			p.setMiddleName("mn t1");
 			p.setLastName("ln t1");
 			p.setDob(LocalDate.of(1999, 07, 22));
-			p.setGender(PersonGender.MALE);
+			p.setGender(Gender.MALE);
 
 			PersonDao dao = (PersonDao) context.getBean("getPersonDao");
 			
-			assertFalse(dao == null);
+			assertNotNull(dao);
 			dao.save(p);
-		} catch (Exception e) {
-			e.printStackTrace();
-			assertFalse(true);
-		}
+			
+			p = (PersonEntity) context.getBean("getPersonEntity");
+			p.setFirstName("fn t2");
+			p.setMiddleName("mn t2");
+			p.setLastName("ln t2");
+			p.setDob(LocalDate.of(1998, 07, 22));
+			p.setGender(Gender.FEMALE);
+			
+			assertNotNull(dao);
+			dao.save(p);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			assertFalse(true);
+//		}
 	}
 
 	
 	@Test
 	public void readPersonFromDbTest() {
 		long id = 1;
-		long notExistId = 2;
-		try {
+		long notExistId = -1;
+//		try {
 			PersonDao dao = (PersonDao) context.getBean("getPersonDao");
-			assertFalse(dao == null);
+			assertNotNull(dao);
 			
 			if(!dao.isExists(id)){
 				//may be record is not in db try to add
@@ -87,26 +98,26 @@ public class PersistenceTestCase extends TestCase {
 			}
 			
 			PersonEntity ent = dao.getById(id);
-			assertFalse(ent == null);
-			assertTrue(ent.getId() == id);
+			assertNotNull(ent);
+			assertEquals(id, ent.getId());
 			assertTrue(ent.getDob().isEqual(LocalDate.of(1999, 07, 22)));
-			assertTrue(ent.getGender().equals(PersonGender.MALE));
+			assertTrue(ent.getGender().equals(Gender.MALE));
 			
 			ent = dao.getById(notExistId);
-			assertTrue(ent == null);
+			assertNull(ent);
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-			assertFalse(true);
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			assertFalse(true);
+//		}
 	}
 	
 	@Test
 	public void deletePersonFromDbTest() {
 		long id = 1;
-		try {
+//		try {
 			PersonDao dao = (PersonDao) context.getBean("getPersonDao");
-			assertFalse(dao == null);
+			assertNotNull(dao);
 			
 			if(!dao.isExists(id)){
 				//may be record is not in db try to add
@@ -114,16 +125,67 @@ public class PersistenceTestCase extends TestCase {
 			}
 		
 			PersonEntity ent = dao.getById(id);
-			assertFalse(ent == null);
+			assertNotNull(ent);
 			
 			dao.deleteById(id);
 			
 			ent = dao.getById(id);
-			assertTrue(ent == null);
+			assertNull(ent);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			assertFalse(true);
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			assertFalse(true);
+//		}
+	}
+	
+	/*@Test
+	public void checkPersonIdentifierTest() {
+//		try {
+			PersonEntityImpl p = (PersonEntityImpl) context.getBean("getPersonEntity");
+			p.setFirstName("fn t1");
+			p.setMiddleName("mn t1");
+			p.setLastName("ln t1");
+			p.setDob(LocalDate.of(1999, 07, 22));
+			p.setGender(Gender.MALE);
+			long id = 5;
+			p.setId(id);
+
+			PersonDao dao = (PersonDao) context.getBean("getPersonDao");
+			
+			assertNotNull(dao);
+			dao.save(p);
+			
+			PersonEntity ent = dao.getById(id);
+			System.out.println(ent.getId());
+			assertNotNull(ent);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			assertFalse(true);
+//		}
+	}*/
+	
+	@Test
+	public void undefinedDaoFactoryTest(){
+		DaoFactory factory = DaoFactory.getDaoFactory(-1);
+		assertNull(factory);
+		
+	}
+	
+	@Test
+	public void mysqlDaoFactoryTest(){
+		DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+		assertNotNull(factory);
+		
+		PersonDao dao = factory.getPersonDao();
+		assertNotNull(dao);
+	}
+	
+	@Test
+	public void hsqldbDaoFactoryTest(){
+		DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.HSQLDB);
+		assertNotNull(factory);
+		
+		PersonDao dao = factory.getPersonDao();
+		assertNotNull(dao);
 	}
 }

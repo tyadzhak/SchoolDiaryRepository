@@ -16,6 +16,6 @@ public interface Person extends Serializable  {
 	LocalDate getDob();
 	void setDob(LocalDate date);
 	
-	PersonGender getGender();
-	void setGender(PersonGender gender);
+	Gender getGender();
+	void setGender(Gender gender);
 }

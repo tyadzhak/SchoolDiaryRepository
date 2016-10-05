@@ -8,13 +8,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jboss.logging.annotations.Param;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 
 import com.tiad.SchoolDiary.model.Person;
-import com.tiad.SchoolDiary.model.PersonGender;
+import com.tiad.SchoolDiary.model.Gender;
 import com.tiad.SchoolDiary.model.impl.ModelFactoryCreator;
 import com.tiad.SchoolDiary.persistence.PersistenceConfig;
 import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
@@ -25,6 +26,7 @@ import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 public class MainResource {
 
 	@GET
+	@Path("/PersonResponse")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response start() throws JSONException {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
@@ -39,18 +41,13 @@ public class MainResource {
 		personEnt.setMiddleName("mn t1");
 		personEnt.setLastName("ln t1");
 		personEnt.setDob(LocalDate.of(1999, 07, 22));
-		personEnt.setGender(PersonGender.MALE);
+		personEnt.setGender(Gender.MALE);
 		
 		personDao.save(personEnt);
 		PersonEntity ent = personDao.getById(1);
 		
 		Person p = ModelFactoryCreator.createPerson(ent);
-			
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("Person", p); 
- 
-		String result = "@Produces(\"application/json\") Output: \n\n" + jsonObject;
-		return Response.status(200).entity(result).build();
+ 		return Response.status(200).entity(p).build();
 	}
 	
 	@GET
@@ -70,7 +67,7 @@ public class MainResource {
 			personEnt.setMiddleName("mn t1");
 			personEnt.setLastName("ln t1");
 			personEnt.setDob(LocalDate.of(1999, 07, 22));
-			personEnt.setGender(PersonGender.MALE);
+			personEnt.setGender(Gender.MALE);
 			
 			personDao.save(personEnt);
 		}
