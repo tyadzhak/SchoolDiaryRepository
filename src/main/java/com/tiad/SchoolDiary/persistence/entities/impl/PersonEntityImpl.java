@@ -4,18 +4,25 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.tiad.SchoolDiary.model.Gender;
+import com.tiad.SchoolDiary.model.Role;
 import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
 
 @Entity
-@Table(name="person")
-public class PersonEntityImpl implements PersonEntity {
+//@MappedSuperclass
+@Table(name="person", schema="schoolDiary")
+public /*abstract*/ class PersonEntityImpl implements PersonEntity {
 	/**
 	 * serial
 	 */
@@ -23,8 +30,8 @@ public class PersonEntityImpl implements PersonEntity {
 	
 	@Id
 	@Column(name="recId", nullable=false, unique=true)
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@SequenceGenerator(name="person_sequence")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@SequenceGenerator(name="person_sequence", schema="schoolDiary")
 	private long id;
 	
 	@Column(name="firstName")
@@ -37,10 +44,16 @@ public class PersonEntityImpl implements PersonEntity {
 	private String lastName;
 	
 	@Column(name="dob")
+	//@Temporal(TemporalType.DATE)
 	private LocalDate dob;
 	
 	@Column(name="gender")
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
+	
+	@Column(name="role")
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	public long getId() {
 		return id;
@@ -100,6 +113,14 @@ public class PersonEntityImpl implements PersonEntity {
 		this.gender = gender;
 	}
 
+	@Override
+	public Role getRole() {
+		return role;
+	}
 	
+	@Override
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 }

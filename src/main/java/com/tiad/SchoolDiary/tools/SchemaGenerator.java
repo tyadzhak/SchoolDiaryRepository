@@ -16,19 +16,13 @@ import org.hibernate.tool.hbm2ddl.SchemaExport.Action;
 import org.hibernate.tool.schema.TargetType;
 
 public class SchemaGenerator {
-	private Configuration cfg;
-
-	public SchemaGenerator(Configuration c) {
-		cfg = c;
-	}
-
 	/**
 	 * Method that actually creates the file.
 	 * 
 	 * @throws Exception
 	 */
-	public void generate(String file, String packageName) throws Exception {
-		ServiceRegistry serviceRegistry = buildCfg();
+	public void generate(String file, String packageName, Configuration cfg) throws Exception {
+		ServiceRegistry serviceRegistry = buildCfg(cfg);
 		MetadataSources metadata = new MetadataSources(serviceRegistry);
 
 		for (Class<?> clazz : getClasses(packageName)) {
@@ -39,12 +33,12 @@ public class SchemaGenerator {
 
 		schemaExport.setDelimiter(";");
 		schemaExport.setOutputFile(file);
-		schemaExport.execute(EnumSet.of(TargetType.STDOUT), Action.BOTH,
+		schemaExport.execute(EnumSet.of(TargetType.SCRIPT), Action.BOTH,
 				metadata.buildMetadata());
 		((StandardServiceRegistryImpl) serviceRegistry).destroy();
 	}
 
-	private ServiceRegistry buildCfg() {
+	private ServiceRegistry buildCfg(Configuration cfg) {
 		return (ServiceRegistry) cfg.getStandardServiceRegistryBuilder()
 				.build();
 	}

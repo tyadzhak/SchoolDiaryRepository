@@ -15,6 +15,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 
 import com.tiad.SchoolDiary.model.Person;
+import com.tiad.SchoolDiary.model.Role;
 import com.tiad.SchoolDiary.model.Gender;
 import com.tiad.SchoolDiary.model.impl.ModelFactoryCreator;
 import com.tiad.SchoolDiary.persistence.PersistenceConfig;
@@ -42,6 +43,7 @@ public class MainResource {
 		personEnt.setLastName("ln t1");
 		personEnt.setDob(LocalDate.of(1999, 07, 22));
 		personEnt.setGender(Gender.MALE);
+		personEnt.setRole(Role.PARENT);
 		
 		personDao.save(personEnt);
 		PersonEntity ent = personDao.getById(1);
@@ -68,6 +70,7 @@ public class MainResource {
 			personEnt.setLastName("ln t1");
 			personEnt.setDob(LocalDate.of(1999, 07, 22));
 			personEnt.setGender(Gender.MALE);
+			personEnt.setRole(Role.PARENT);
 			
 			personDao.save(personEnt);
 		}

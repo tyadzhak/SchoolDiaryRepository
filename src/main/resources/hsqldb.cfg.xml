@@ -18,6 +18,11 @@
 		<property name="hibernate.connection.password">
 			test
 		</property>
-		<property name="hibernate.hbm2ddl.auto">create-drop</property>
+		<property name="hibernate.hbm2ddl.auto">
+			create-drop
+		</property>
+		<property name="hbm2ddl.import_files">
+			import.sql
+		</property>
 	</session-factory>
 </hibernate-configuration>

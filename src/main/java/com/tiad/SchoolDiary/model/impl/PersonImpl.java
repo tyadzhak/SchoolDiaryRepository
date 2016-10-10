@@ -6,76 +6,83 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.tiad.SchoolDiary.model.Person;
+import com.tiad.SchoolDiary.model.Role;
 import com.tiad.SchoolDiary.model.Gender;
 import com.tiad.SchoolDiary.model.adapters.GenderAdapter;
 import com.tiad.SchoolDiary.model.adapters.LocalDateAdapter;
-import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
-import com.tiad.SchoolDiary.persistence.entities.impl.PersonEntityImpl;
+import com.tiad.SchoolDiary.model.adapters.RoleAdapter;
 
 @XmlRootElement(name = "Person")
 public class PersonImpl implements Person {
 	private static final long serialVersionUID = -8103095310142859744L;
 
-	private PersonEntity entity;
-	
-	public PersonImpl() {
-		//todo model do not create instance of entity
-		entity = new PersonEntityImpl();
-	}
-		
-	public PersonImpl(PersonEntity ent) {
-		this.entity = ent;
-	}
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private LocalDate dob;
+	private Gender gender;
+	private Role role;
 
 	@Override
 	public String getFirstName() {
-		return entity.getFirstName();
+		return firstName;
 	}
 	
 	@Override
 	public void setFirstName(String name) {
-		entity.setFirstName(name);		
+		firstName = name;		
 	}
 	
 	@Override
 	public String getMiddleName() {
-		return entity.getMiddleName();
+		return middleName;
 	}
 	
 	@Override
 	public void setMiddleName(String name) {
-		entity.setMiddleName(name);		
+		middleName = name;	
 	}
 	
 	@Override
 	public String getLastName() {
-		return entity.getLastName();
+		return lastName;
 	}
 	
 	@Override
 	public void setLastName(String name) {
-		entity.setLastName(name);		
+		lastName = name;		
 	}
 	
 	@Override
 	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getDob() {
-		return entity.getDob();
+		return dob;
 	}
 	
 	@Override
 	public void setDob(LocalDate date) {
-		entity.setDob(date);
+		dob = date;
 	}
 	
 	@Override
 	@XmlJavaTypeAdapter(GenderAdapter.class)
 	public Gender getGender() {
-		return entity.getGender();
+		return gender;
 	}
 	
 	@Override
-	public void setGender(Gender gender) {
-		entity.setGender(gender);
+	public void setGender(Gender g) {
+		gender = g;
+	}
+	
+	@Override
+	@XmlJavaTypeAdapter(RoleAdapter.class)
+	public Role getRole() {
+		return role;
+	}
+	
+	@Override
+	public void setRole(Role r) {
+		role = r;
 	}
 }

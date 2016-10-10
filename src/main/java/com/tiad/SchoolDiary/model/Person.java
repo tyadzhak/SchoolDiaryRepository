@@ -18,4 +18,7 @@ public interface Person extends Serializable  {
 	
 	Gender getGender();
 	void setGender(Gender gender);
+	
+	Role getRole();
+	void setRole(Role role);
 }

@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tiad.SchoolDiary.model.Gender;
+import com.tiad.SchoolDiary.model.Role;
 import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
 import com.tiad.SchoolDiary.persistence.dao.PersonDao;
 import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
@@ -45,8 +46,7 @@ public class PersistenceTestCase extends TestCase {
 //		try {
 			assertEquals(false, file.isEmpty());
 
-			SchemaGenerator gen = new SchemaGenerator(cfgBean);
-			gen.generate(file, "com.tiad.SchoolDiary.persistence.entities.impl");
+			new SchemaGenerator().generate(file, "com.tiad.SchoolDiary.persistence.entities.impl", cfgBean);
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //			assertFalse(true);
@@ -62,6 +62,7 @@ public class PersistenceTestCase extends TestCase {
 			p.setLastName("ln t1");
 			p.setDob(LocalDate.of(1999, 07, 22));
 			p.setGender(Gender.MALE);
+			p.setRole(Role.PARENT);
 
 			PersonDao dao = (PersonDao) context.getBean("getPersonDao");
 			
@@ -74,6 +75,7 @@ public class PersistenceTestCase extends TestCase {
 			p.setLastName("ln t2");
 			p.setDob(LocalDate.of(1998, 07, 22));
 			p.setGender(Gender.FEMALE);
+			p.setRole(Role.SCHOOL_CHILD);
 			
 			assertNotNull(dao);
 			dao.save(p);
