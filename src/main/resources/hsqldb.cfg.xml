@@ -19,8 +19,9 @@
 			test
 		</property>
 		<property name="hibernate.hbm2ddl.auto">
-			create-drop
+			validate
 		</property>
+		<!-- property name="hibernate.show_sql">true</property-->
 		<property name="hbm2ddl.import_files">
 			import.sql
 		</property>

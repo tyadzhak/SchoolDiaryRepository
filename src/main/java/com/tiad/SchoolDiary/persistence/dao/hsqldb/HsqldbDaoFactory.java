@@ -1,12 +1,12 @@
 package com.tiad.SchoolDiary.persistence.dao.hsqldb;
 
 import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
-import com.tiad.SchoolDiary.persistence.dao.PersonDao;
+import com.tiad.SchoolDiary.persistence.dao.SchoolDao;
 
 public class HsqldbDaoFactory extends DaoFactory{
 
 	@Override
-	public PersonDao getPersonDao() {
-		return new HsqldbPersonDao();
+	public SchoolDao getSchoolDao() {
+		return new HsqldbSchoolDao();
 	}
 }

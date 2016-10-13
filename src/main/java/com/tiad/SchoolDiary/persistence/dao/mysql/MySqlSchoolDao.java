@@ -4,9 +4,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiad.SchoolDiary.persistence.dao.GenericDao;
-import com.tiad.SchoolDiary.persistence.dao.PersonDao;
-import com.tiad.SchoolDiary.persistence.entities.impl.PersonEntityImpl;
-
+import com.tiad.SchoolDiary.persistence.dao.SchoolDao;
+import com.tiad.SchoolDiary.persistence.entities.impl.SchoolEntityImpl;
 
 /*
  * @Repository is one from Spring and it’s pretty straight-forward. It’s used to
@@ -20,6 +19,6 @@ import com.tiad.SchoolDiary.persistence.entities.impl.PersonEntityImpl;
  */
 @Repository
 @Transactional
-public class MySqlPersonDao extends GenericDao<PersonEntityImpl> implements PersonDao<PersonEntityImpl> {
-	
+public class MySqlSchoolDao extends GenericDao<SchoolEntityImpl> implements SchoolDao<SchoolEntityImpl> {
+
 }

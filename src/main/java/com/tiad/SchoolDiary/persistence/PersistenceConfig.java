@@ -15,9 +15,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.tiad.SchoolDiary.persistence.dao.DaoFactory;
-import com.tiad.SchoolDiary.persistence.dao.PersonDao;
-import com.tiad.SchoolDiary.persistence.entities.PersonEntity;
-import com.tiad.SchoolDiary.persistence.entities.impl.PersonEntityImpl;
+import com.tiad.SchoolDiary.persistence.dao.SchoolDao;
 
 @Configuration
 @EnableTransactionManagement
@@ -26,6 +24,7 @@ public class PersistenceConfig {
 
 	@Bean(name="sessionFactory")
 	public LocalSessionFactoryBean sessionFactory() {
+		System.out.println("prodaction_sessionFactory");
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(restDataSource());
 		sessionFactory.setPackagesToScan(new String[] { "com.tiad.SchoolDiary" });
@@ -70,14 +69,20 @@ public class PersistenceConfig {
 		return new HibernateTemplate(sessionFactory().getObject());
 	}
 	
-	@Bean(name="getPersonDao")
-	public PersonDao<?> getPersonDao(){
-		//return DaoFactory.getDaoFactory(DaoFactory.MYSQL).getPersonDao();
-		return DaoFactory.getDaoFactory(DaoFactory.HSQLDB).getPersonDao();
+	/*
+	@Bean(name="schoolService")
+	public SchoolService getSchoolService(){
+		return new SchoolService();
+	}*/
+	
+	@Bean(name="schoolDao")
+	public SchoolDao<?> getSchoolDao(){
+		//return DaoFactory.getDaoFactory(DaoFactory.MYSQL).getSchoolDao();
+		return DaoFactory.getDaoFactory(DaoFactory.HSQLDB).getSchoolDao();
 	}
 	
-	@Bean(name="getPersonEntity")
+	/*@Bean(name="getPersonEntity")
 	public PersonEntity getPersonEntity(){
 		return new PersonEntityImpl();
-	}
+	}*/
 }
